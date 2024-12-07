@@ -3,8 +3,9 @@ from PIL import Image
 import pickle
 import pandas as pd
 import numpy as np
+import scipy.sparse as sp
 
-st.set_page_config(page_title="Recommendation System", page_icon=":shopping_cart:", layout="wide")
+st.set_page_config(page_title="Sentiment Analysis System", page_icon=":shopping_cart:", layout="wide")
 
 # Sidebar for navigation
 menu = ["Home", "Hasaki",'Project Summary', "Sentiment Analysis"]
@@ -52,7 +53,7 @@ st.sidebar.markdown(
     </style>
     <div class="footer">
         <hr>
-        <p>© 2024 Hasaki Recommendation System</p>
+        <p>© 2024 Hasaki Sentiment Analysis System</p>
     </div>
     """,
     unsafe_allow_html=True,
@@ -104,7 +105,7 @@ if page == "Home":
     # Footer
     st.markdown("""
     ---
-    **© 2024 Sentiment Analysis Project** | Developed with ❤️ by [Mã Thế Nhựt & Từ Thị Thanh Xuân]
+    **© 2024 Sentiment Analysis System** | Developed with ❤️ by [Mã Thế Nhựt & Từ Thị Thanh Xuân]
     """)
 
 #####################################
@@ -354,7 +355,6 @@ elif page == "Sentiment Analysis":
             df_new_review['content_length_scaled'] = scaler.transform(df_new_review[['content_length']]) # Use the same scaler from training
 
             # Combine features
-            import scipy.sparse as sp
             new_reviews_combined = sp.hstack((x_new, df_new_review[['content_length_scaled']]))
 
             # Predict sentiment
