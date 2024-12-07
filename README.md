@@ -29,7 +29,7 @@ streamlit_sentiment_analysis
 
 3. Run the Streamlit application:
    ```
-   streamlit run streamlit_sentiment.py
+   streamlit run src/streamlit_sentiment.py
    ```
 
 ## Usage
