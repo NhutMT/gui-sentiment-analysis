@@ -94,13 +94,13 @@ if page == "Home":
 
     with col1:
         st.write("### Mã Thế Nhựt")
-        image1 = Image.open("src/images/A.jpg")
-        st.image(image1, caption="Mã Thế Nhựt - Data Scientist", use_container_width=True)
+        # image1 = Image.open("src/images/A.jpg")
+        # st.image(image1, caption="Mã Thế Nhựt - Data Scientist", use_container_width=True)
 
     with col2:
         st.write("### Từ Thị Thanh Xuân")
-        image2 = Image.open("src/images/B.jpg")
-        st.image(image2, caption="Từ Thị Thanh Xuân - Machine Learning Engineer", use_container_width=True)
+        # image2 = Image.open("src/images/B.jpg")
+        # st.image(image2, caption="Từ Thị Thanh Xuân - Machine Learning Engineer", use_container_width=True)
 
     # Footer
     st.markdown("""
