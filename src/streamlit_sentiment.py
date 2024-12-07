@@ -258,15 +258,15 @@ elif page == "Project Summary":
     - Tăng sự hài lòng và lòng trung thành của khách hàng thông qua các cải tiến.
     """)
 
-    # Interactive Demo Placeholder (Optional)
-    st.subheader("5. Trải nghiệm mẫu 💻")
-    st.markdown("**Nhập bình luận của bạn bên dưới để kiểm tra dự đoán cảm xúc (tích cực/tiêu cực):**")
-    user_input = st.text_area("Nhập bình luận khách hàng:")
-    if user_input:
-        # Placeholder Prediction Logic
-        # Replace this logic with your trained model's prediction
-        sentiment = "Tích cực" if "tốt" in user_input.lower() else "Tiêu cực"
-        st.success(f"🌟 **Dự đoán cảm xúc**: {sentiment}")
+    # # Interactive Demo Placeholder (Optional)
+    # st.subheader("5. Trải nghiệm mẫu 💻")
+    # st.markdown("**Nhập bình luận của bạn bên dưới để kiểm tra dự đoán cảm xúc (tích cực/tiêu cực):**")
+    # user_input = st.text_area("Nhập bình luận khách hàng:")
+    # if user_input:
+    #     # Placeholder Prediction Logic
+    #     # Replace this logic with your trained model's prediction
+    #     sentiment = "Tích cực" if "tốt" in user_input.lower() else "Tiêu cực"
+    #     st.success(f"🌟 **Dự đoán cảm xúc**: {sentiment}")
 
 #####################################
 
