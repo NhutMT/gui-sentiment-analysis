@@ -592,7 +592,7 @@ if page == "Project Summary":
 
 elif page == "Sentiment Analysis":
     image = Image.open("src/images/process.png")
-    st.image(image, caption="Hasaki.VN - Quality & Trust", use_container_width=True)
+    st.image(image, caption="Hasaki.VN - Quality & Trust")
 
     pkl_filemodel = "src/models/logreg_model.pkl" 
     with open(pkl_filemodel, 'rb') as file:  
