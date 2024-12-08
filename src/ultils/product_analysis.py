@@ -1,16 +1,7 @@
 import pandas  as pd
-import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
 import streamlit as st
-
-import os
-import shutil
-
 from wordcloud import WordCloud
-import textwrap
-from tabulate import tabulate
-from ultils import helper
 
 
 def GetProductInfoByCode(df_product, product_code):
@@ -25,27 +16,6 @@ def GetProductInfoByCode(df_product, product_code):
     # # Prepare the data
     df_info = GenerateProductDetailTable(df_product_info)
     return df_info
-
-
-    # df_anlyze, sentiment_data, sentiment_categories = GetProductReview(df_review_new, product_code)
-    # # Check if reviews exist
-    # if df_anlyze.empty:
-    #     print("Không có dữ liệu đánh giá cho sản phẩm này.")
-    #     return
-
-    # print("\nPhân tích sản phẩm:")
-    # # print("Tổng lượt Reviews: ", df_anlyze['Total_Sentiment'].drop_duplicates().values[0])
-    # DrawPieChart(sentiment_data, sentiment_categories)
-
-    # # Generate word clouds for each sentiment category
-    # s_positive = df_anlyze[df_anlyze['Categorized'] == 1]
-    # s_negative = df_anlyze[df_anlyze['Categorized'] == 0]
-
-    # print("\nTop 50 từ Positive về sản phẩm:")
-    # res_wcloud_visualize(s_positive, 'Pos_words', 'Word Cloud - Positive Sentiment')
-
-    # print("\nTop 50 từ Negative về sản phẩm:")
-    # res_wcloud_visualize(s_negative, 'Neg_words', 'Word Cloud - Negative Sentiment')
 
 def GenerateProductDetailTable(df_product_info):
     short_desc = ' '.join(df_product_info['mo_ta'].values[0].split()[:100])
@@ -97,7 +67,6 @@ def DrawPieChart(data, categories):
     st.pyplot(fig)
 
 def GetProductReview(df_review, product_code):
-
   # Analyze the reviews for the selected product
   df_anlyze = df_review.loc[df_review['ma_san_pham'] == product_code]
 
