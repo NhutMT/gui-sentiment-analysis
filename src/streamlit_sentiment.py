@@ -9,17 +9,6 @@ from ultils import helper, product_analysis
 
 st.set_page_config(page_title="Sentiment Analysis System", page_icon=":shopping_cart:", layout="wide")
 
-# Sidebar for navigation
-# Todo: 
-#   Move tên thành viên qua sidebar -> done
-#   Home + Hasaki + Project Summary vào 1 trang. -> done
-#   Build Model 1 trang
-#  Sentiment Analysis 1 trang
-#  Product Analysis 1 trang -> process
-
-
-
-
 menu = ["Project Summary", "Sentiment Analysis", "Product Analysis", ]
 st.sidebar.title("Đồ Án Tốt Nghiệp")
 st.sidebar.markdown(
@@ -113,8 +102,7 @@ st.sidebar.write("© 2024 Hasaki Sentiment Analysis System")
 if page == "Project Summary":
     # Banner Image
     image = Image.open("src/images/hasaki_banner.jpg")
-    st.image(image, 
-             use_container_width=True)
+    st.image(image, use_container_width=True)
 
     tab_containers = st.tabs(['Hasaki Project', 'Thực Hiện Dự Án'])
 
@@ -170,8 +158,6 @@ if page == "Project Summary":
         - Tăng sự **hài lòng** và **lòng trung thành** của khách hàng thông qua các cải tiến.
         """)
 
-        
-          
     with tab_containers[1]:  # Assuming the second tab is for the project process
         st.subheader("Quy trình thực hiện 💡")
 
@@ -185,11 +171,8 @@ if page == "Project Summary":
         st.image(image, caption="Đánh giá về sản phẩm nước Hoa Hồng Klairs Không Mùi Cho Da Nhạy Cảm 180ml Supple Preparation Unscented Toner",
                   use_container_width=True)
     
-     
-
         # Step 2: Data Processing Section
         st.subheader("2. Xử lý dữ liệu 🔄")
-
         st.markdown("""
         ### Mục tiêu:
         Chuẩn bị và làm sạch dữ liệu bình luận để sẵn sàng cho các bước phân tích và xây dựng mô hình.
@@ -219,7 +202,6 @@ if page == "Project Summary":
         
         # Step 3: Labeling and Sentiment Analysis Section
         st.subheader("3. Gắn nhãn và phân tích cảm xúc 🏷️📊")
-
         st.markdown("""
         ### Mục tiêu:
         - Gắn nhãn (label) cho dữ liệu bình luận để sử dụng trong phân tích cảm xúc hoặc các mô hình học máy giám sát.
@@ -254,9 +236,9 @@ if page == "Project Summary":
         image = Image.open("src/images/label.png")
         st.image(image, caption="Dữ liệu sau khi được label",
                   use_container_width=True)
+        
         # Step 4: Detailed Product Analysis Section
         st.subheader("4. Phân tích chi tiết sản phẩm 🛍️")
-
         st.markdown("""
         ### Mục tiêu:
         Cung cấp thông tin chi tiết về sản phẩm, bao gồm:
@@ -340,7 +322,6 @@ if page == "Project Summary":
         """)
         # Step 7: Model Comparison and Recommendation
         st.subheader("7. So sánh và lựa chọn mô hình tối ưu 📊")
-
         st.markdown("""
         ### Mục tiêu:
         So sánh hiệu suất của các mô hình Logistic Regression, Multinomial Naive Bayes, XGBoost, và SVM.
@@ -349,7 +330,6 @@ if page == "Project Summary":
 
         # Display Comparison Table
         st.markdown("### Bảng so sánh hiệu suất các mô hình:")
-
         comparison_data = {
             "Metric": ["Accuracy", "Precision (Class 0)", "Precision (Class 1)", "Recall (Class 0)", "Recall (Class 1)", "F1-Score (Class 0)", "F1-Score (Class 1)", "ROC-AUC Score"],
             "Logistic Regression": [0.9778, 0.63, 1.00, 0.96, 0.98, 0.76, 0.99, 0.99],
@@ -363,7 +343,6 @@ if page == "Project Summary":
 
         # Recommendation Section
         st.markdown("### Lựa chọn mô hình tối ưu 📌")
-
         st.markdown("""
         #### Lý do lựa chọn Logistic Regression:
         1. **Dễ hiểu và giải thích**:
@@ -389,7 +368,6 @@ if page == "Project Summary":
 
         # Step 8: System Deployment
         st.subheader("8. Triển khai hệ thống 🚀")
-
         st.markdown("""
         ### Mục tiêu:
         Triển khai mô hình học máy vào hệ thống thực tế để hỗ trợ quản lý sản phẩm và dịch vụ.
