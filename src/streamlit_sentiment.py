@@ -168,9 +168,7 @@ if page == "Project Summary":
         - **Mục tiêu:** Tạo tập dữ liệu chất lượng cao để đào tạo và đánh giá mô hình học máy.
         """)
         image = Image.open("src/images/rv2.png")
-        st.image(image, caption="Đánh giá về sản phẩm nước Hoa Hồng Klairs Không Mùi Cho Da Nhạy Cảm 180ml Supple Preparation Unscented Toner",
-                #   use_container_width=True
-                  )
+        st.image(image, caption="Đánh giá về sản phẩm nước Hoa Hồng Klairs Không Mùi Cho Da Nhạy Cảm 180ml Supple Preparation Unscented Toner")
     
         # Step 2: Data Processing Section
         st.subheader("2. Xử lý dữ liệu 🔄")
@@ -198,8 +196,7 @@ if page == "Project Summary":
         - Dữ liệu sạch và chuẩn hóa, lưu trữ dưới dạng cột văn bản đã xử lý và phân đoạn.
         """)
         image = Image.open("src/images/output1.png")
-        st.image(image, caption="Nội dung bình luận trước và sau khi xử lý",
-                  use_container_width=True)
+        st.image(image, caption="Nội dung bình luận trước và sau khi xử lý")
         
         # Step 3: Labeling and Sentiment Analysis Section
         st.subheader("3. Gắn nhãn và phân tích cảm xúc 🏷️📊")
@@ -235,8 +232,7 @@ if page == "Project Summary":
         - Tính tỷ lệ phần trăm cảm xúc tích cực hoặc tiêu cực cho mỗi sản phẩm, hỗ trợ phân tích xu hướng cảm xúc của khách hàng.
         """)
         image = Image.open("src/images/label.png")
-        st.image(image, caption="Dữ liệu sau khi được label",
-                  use_container_width=True)
+        st.image(image, caption="Dữ liệu sau khi được label")
         
         # Step 4: Detailed Product Analysis Section
         st.subheader("4. Phân tích chi tiết sản phẩm 🛍️")
@@ -257,12 +253,11 @@ if page == "Project Summary":
         - Nếu không có dữ liệu, thông báo sẽ được hiển thị để người dùng biết.
         """)
         image = Image.open("src/images/info.png")
-        st.image(image,
-                  use_container_width=True)
+        st.image(image)
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
             image = Image.open("src/images/pie.png")
-            st.image(image, use_container_width=True)
+            st.image(image)
 
         # Center the title using HTML
         st.markdown(
@@ -278,12 +273,12 @@ if page == "Project Summary":
         # Positive Word Cloud
         with cols[0]:
             image = Image.open("src/images/pos.png")
-            st.image(image, use_container_width=True)
+            st.image(image)
 
         # Negative Word Cloud
         with cols[1]:
             image = Image.open("src/images/neg.png")
-            st.image(image, use_container_width=True)
+            st.image(image)
 
         # Step 5: Data Preparation for Machine Learning
         st.subheader("5. Chuẩn bị dữ liệu cho Mô hình Học máy 🤖")
