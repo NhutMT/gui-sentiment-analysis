@@ -102,7 +102,7 @@ st.sidebar.write("© 2024 Hasaki Sentiment Analysis System")
 if page == "Project Summary":
     # Banner Image
     image = Image.open("src/images/hasaki_banner.jpg")
-    st.image(image, use_container_width=True)
+    st.image(image, caption=" ", use_container_width=True)
 
     tab_containers = st.tabs(['Hasaki Project', 'Thực Hiện Dự Án'])
 
