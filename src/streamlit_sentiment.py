@@ -169,7 +169,8 @@ if page == "Project Summary":
         """)
         image = Image.open("src/images/rv2.png")
         st.image(image, caption="Đánh giá về sản phẩm nước Hoa Hồng Klairs Không Mùi Cho Da Nhạy Cảm 180ml Supple Preparation Unscented Toner",
-                  use_container_width=True)
+                #   use_container_width=True
+                  )
     
         # Step 2: Data Processing Section
         st.subheader("2. Xử lý dữ liệu 🔄")
