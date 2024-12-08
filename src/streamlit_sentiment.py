@@ -253,7 +253,7 @@ if page == "NewPage":
         st.image(image, caption="Dữ liệu sau khi được label",
                   use_container_width=True)
         # Step 4: Detailed Product Analysis Section
-        st.subheader("5. Phân tích chi tiết sản phẩm 🛍️")
+        st.subheader("4. Phân tích chi tiết sản phẩm 🛍️")
 
         st.markdown("""
         ### Mục tiêu:
@@ -277,44 +277,131 @@ if page == "NewPage":
         image = Image.open("src/images/pie.png")
         st.image(image, caption="Thông tin sản phẩm bạn đang tìm kiếm",
                   use_container_width=True)
-        image = Image.open("src/images/pos.png")
-        st.image(image, caption="Thông tin sản phẩm bạn đang tìm kiếm",
-                  use_container_width=True)
-        image = Image.open("src/images/neg.png")
-        st.image(image, caption="Thông tin sản phẩm bạn đang tìm kiếm",
-                  use_container_width=True)
+        from PIL import Image
 
-        # Step 3: Model Development
-        st.subheader("3. Xây dựng mô hình học máy 🤖")
+        # Center the title using HTML
+        st.markdown(
+            """
+            <h3 style="text-align: center;">Word Cloud - Positive and Negative Sentiment:</h3>
+            """,
+            unsafe_allow_html=True
+        )
+
+        # Display Positive and Negative Word Cloud Images Side-by-Side
+        cols = st.columns(2)
+
+        # Positive Word Cloud
+        with cols[0]:
+            image = Image.open("src/images/pos.png")
+            st.image(image, caption="Top 50 từ tích cực về sản phẩm", use_container_width=True)
+
+        # Negative Word Cloud
+        with cols[1]:
+            image = Image.open("src/images/neg.png")
+            st.image(image, caption="Top 50 từ tiêu cực về sản phẩm", use_container_width=True)
+
+        # Step 5: Data Preparation for Machine Learning
+        st.subheader("5. Chuẩn bị dữ liệu cho Mô hình Học máy 🤖")
+
         st.markdown("""
-        - **Các mô hình dự kiến sử dụng**:
-            - Logistic Regression.  
-            - Random Forest.  
-            - Mô hình transformer như BERT để xử lý văn bản tự nhiên.  
-        - **Lý do chọn mô hình**: Đánh đổi giữa độ chính xác và hiệu suất xử lý.
-        """)
-        #Step 4: Evaluation and Improvement
-        st.subheader("4. Đánh giá và cải thiện 📊")
-        st.markdown("""
-        - **Tiêu chí đánh giá**:
-            - Precision.  
-            - Recall.  
-            - F1-Score.  
-        - **Báo cáo hỗ trợ**:
-            - Classification Report.  
-            - ROC Curve để đo lường hiệu quả.  
-        - **Quy trình cải tiến**:
-            - Dựa trên các chỉ số và phản hồi từ đội ngũ sử dụng.
-        """)
-        # Step 5: System Deployment
-        st.subheader("5. Triển khai hệ thống 🚀")
-        st.markdown("""
-        - **Tích hợp mô hình** trên website của Hasaki.vn.  
-        - **Phân loại phản hồi theo thời gian thực**:
-            - Phân loại bình luận thành Tích cực hoặc Tiêu cực.  
-            - Hiển thị phân tích nhanh chóng cho người quản lý.  
+        ### Mục tiêu:
+        Chuẩn bị dữ liệu đầu vào chất lượng cao cho các mô hình học máy bằng cách:
+        - Biến đổi văn bản thành đặc trưng số sử dụng TF-IDF.
+        - Bổ sung các đặc trưng hỗ trợ phân tích (độ dài đánh giá).
+        - Xử lý mất cân bằng lớp để cải thiện hiệu suất mô hình.
+
+        ### Quy trình:
+        1. **Phân chia dữ liệu:**
+            - Tách dữ liệu thành tập huấn luyện (80%) và tập kiểm tra (20%).
+        2. **Biến đổi văn bản bằng TF-IDF:**
+            - Sử dụng `TfidfVectorizer` để tạo đặc trưng từ văn bản (giữ lại 5000 từ quan trọng nhất).
+        3. **Thêm đặc trưng hỗ trợ:**
+            - Tính độ dài văn bản và chuẩn hóa bằng `MinMaxScaler`.
+        4. **Kết hợp đặc trưng:**
+            - Kết hợp TF-IDF và đặc trưng độ dài thành một ma trận đầu vào duy nhất.
+        5. **Xử lý mất cân bằng lớp:**
+            - Áp dụng SMOTE để tạo thêm dữ liệu cho lớp nhỏ, đảm bảo dữ liệu cân bằng.
         """)
 
+        # Step 6: Evaluation and Improvement
+        st.subheader("6. Đánh giá và cải thiện 📊")
+
+        st.markdown("""
+        ### Tiêu chí đánh giá:
+        1. **Độ chính xác (Accuracy):** Xác định tỷ lệ dự đoán đúng.
+        2. **F1-Score:** Đo lường cân bằng giữa Precision và Recall.
+        3. **ROC-AUC:** Hiệu quả phân loại dựa trên đường cong ROC.
+
+        ### Quy trình cải thiện:
+        - Dựa trên các chỉ số và phản hồi từ người dùng hệ thống.
+        - Thử nghiệm thêm các mô hình hoặc đặc trưng bổ sung.
+        """)
+        # Step 7: Model Comparison and Recommendation
+        st.subheader("7. So sánh và lựa chọn mô hình tối ưu 📊")
+
+        st.markdown("""
+        ### Mục tiêu:
+        So sánh hiệu suất của các mô hình Logistic Regression, Multinomial Naive Bayes, XGBoost, và SVM.
+        Đưa ra lựa chọn mô hình tối ưu cho bài toán phân loại cảm xúc.
+        """)
+
+        # Display Comparison Table
+        st.markdown("### Bảng so sánh hiệu suất các mô hình:")
+
+        comparison_data = {
+            "Metric": ["Accuracy", "Precision (Class 0)", "Precision (Class 1)", "Recall (Class 0)", "Recall (Class 1)", "F1-Score (Class 0)", "F1-Score (Class 1)", "ROC-AUC Score"],
+            "Logistic Regression": [0.9778, 0.63, 1.00, 0.96, 0.98, 0.76, 0.99, 0.99],
+            "Multinomial Naive Bayes": [0.9639, 0.50, 1.00, 0.96, 0.96, 0.66, 0.98, 0.99],
+            "XGBoost": [0.9849, 0.73, 1.00, 0.93, 0.99, 0.82, 0.99, 0.99],
+            "SVM": [0.9776, 0.62, 1.00, 0.97, 0.98, 0.76, 0.99, 0.99]
+        }
+
+        df_comparison = pd.DataFrame(comparison_data)
+        st.dataframe(df_comparison)
+
+        # Recommendation Section
+        st.markdown("### Lựa chọn mô hình tối ưu 📌")
+
+        st.markdown("""
+        #### Lý do lựa chọn Logistic Regression:
+        1. **Dễ hiểu và giải thích**:
+            - Logistic Regression giúp xác định rõ ràng tầm quan trọng của từng đặc trưng (từ khóa) trong dự đoán.
+            - Thích hợp cho các bài toán cần minh bạch kết quả.
+
+        2. **Hiệu suất ổn định**:
+            - Độ chính xác đạt **97.78%**, gần tương đương XGBoost.
+            - F1-Score cho cả hai lớp (Tích cực, Tiêu cực) rất tốt.
+
+        3. **Đơn giản và hiệu quả**:
+            - Yêu cầu ít tài nguyên tính toán.
+            - Dễ dàng triển khai vào hệ thống thực tế.
+
+        4. **Khả năng mở rộng**:
+            - Thích hợp với dữ liệu lớn và dễ dàng nâng cấp khi có thêm dữ liệu mới.
+
+        #### So sánh với các mô hình khác:
+        - **XGBoost**: Mặc dù chính xác hơn nhưng phức tạp và đòi hỏi nhiều tài nguyên.
+        - **SVM**: Cân bằng hiệu suất nhưng mất thời gian trong huấn luyện khi dữ liệu lớn.
+        - **Multinomial Naive Bayes**: Nhanh nhưng hiệu suất thấp hơn Logistic Regression.
+        """)
+
+        
+
+        # Step 8: System Deployment
+        st.subheader("8. Triển khai hệ thống 🚀")
+
+        st.markdown("""
+        ### Mục tiêu:
+        Triển khai mô hình học máy vào hệ thống thực tế để hỗ trợ quản lý sản phẩm và dịch vụ.
+
+        ### Nội dung triển khai:
+        1. **Tích hợp mô hình trên nền tảng Hasaki.vn:**
+            - Phân loại phản hồi của khách hàng theo thời gian thực.
+            - Phân tích cảm xúc để cung cấp thông tin hữu ích cho nhà quản lý.
+        2. **Hiển thị báo cáo chi tiết:**
+            - Số lượng bình luận tích cực/tiêu cực.
+            - Xu hướng cảm xúc theo sản phẩm/dịch vụ.
+        """)
 
     with tab_containers[2]:
         st.title("Quy trình thực hiện dự án 🛍️")
