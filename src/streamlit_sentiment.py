@@ -8,38 +8,41 @@ import scipy.sparse as sp
 st.set_page_config(page_title="Sentiment Analysis System", page_icon=":shopping_cart:", layout="wide")
 
 # Sidebar for navigation
-menu = ["Home", "Hasaki",'Project Summary', "Sentiment Analysis"]
+# Todo: 
+#   Move tên thành viên qua sidebar -> done
+#   Home + Hasaki + Project Summary vào 1 trang. -> process
+#   Build Model 1 trang
+#  Sentiment Analysis 1 trang
+#  Product Analysis 1 trang
 
-st.sidebar.title("Navigation")
-page = st.sidebar.selectbox("Choose a page", menu)
+
+
+
+menu = ["NewPage", "Home", "Hasaki",'Project Summary', '', "Sentiment Analysis", "Product Analysis"]
+st.sidebar.title("Đồ Án Tốt Nghiệp")
+st.sidebar.markdown(
+    """
+    <h2 style="display: flex; align-items: center; font-size: 18px;">
+        <span style="margin-left: 8px;">Sentiment Analysis Project</span>
+    </h2>
+    """,
+    unsafe_allow_html=True,
+)
+
+page = st.sidebar.selectbox("Chức Năng", menu)
 
 # Subheader with an icon for "Giảng viên hướng dẫn"
 st.sidebar.markdown(
     """
     <h3 style="display: flex; align-items: center; font-size: 18px;">
-        👩‍🏫 <span style="margin-left: 8px;">Giảng viên hướng dẫn</span>
+        <span style="margin-left: 8px;">Giảng viên hướng dẫn</span>
     </h3>
     """,
     unsafe_allow_html=True,
 )
-st.sidebar.markdown("* [Cô Khuất Thùy Phương](https://csc.edu.vn/giao-vien~37#)")
+st.sidebar.markdown("👩‍🏫 [Thạc Sĩ Khuất Thùy Phương](https://csc.edu.vn/giao-vien~37#)")
 
-
-# Subheader with an icon for "Ngày báo cáo tốt nghiệp"
-st.sidebar.markdown(
-    """
-    <h3 style="display: flex; align-items: center; font-size: 18px;">
-        📅 <span style="margin-left: 8px;">Ngày báo cáo tốt nghiệp:</span>
-    </h3>
-    """,
-    unsafe_allow_html=True,
-)
-st.sidebar.write("16/12/2024")
-
-# Add spacer for footer positioning
-st.sidebar.markdown("<div style='height: 200px;'></div>", unsafe_allow_html=True)
-
-# Sidebar footer
+# Subheader with an icon for "Thành Viên"
 st.sidebar.markdown(
     """
     <style>
@@ -48,19 +51,151 @@ st.sidebar.markdown(
             font-size: 12px;
         }
         hr {
-            border: 1px solid gray;
+            border: 0.5px solid gray;
         }
     </style>
     <div class="footer">
         <hr>
-        <p>© 2024 Hasaki Sentiment Analysis System</p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+st.sidebar.markdown(
+    """
+    <h3 style="display: flex; align-items: center; font-size: 18px;">
+        <span style="margin-left: 8px;">Thành Viên</span>
+    </h3>
+    """,
+    unsafe_allow_html=True,
+)
+st.sidebar.markdown(" :boy: Mã Thế Nhựt")
+st.sidebar.markdown(" :girl: Từ Thị Thanh Xuân")
+
+# Subheader with an icon for "Ngày báo cáo tốt nghiệp"
+st.sidebar.markdown(
+    """
+    <style>
+        .footer {
+            text-align: center;
+            font-size: 12px;
+        }
+        hr {
+            border: 0.5px solid gray;
+        }
+    </style>
+    <div class="footer">
+        <hr>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
+st.sidebar.markdown(
+    """
+    <h3 style="display: flex; align-items: center; font-size: 18px;">
+        <span style="margin-left: 8px;">Ngày báo cáo tốt nghiệp:</span>
+    </h3>
+    """,
+    unsafe_allow_html=True,
+)
+st.sidebar.write('📅 16/12/2024')
+
+# Add spacer for footer positioning
+st.sidebar.markdown("<div style='height: 100px;'></div>", unsafe_allow_html=True)
+
+# Sidebar footer
+st.sidebar.write("© 2024 Hasaki Sentiment Analysis System")
+
+
 # Main page logic
-if page == "Home":
+if page == "NewPage":
+    # Banner Image
+    image = Image.open("src/images/hasaki_banner.jpg")
+    st.image(image, 
+             use_container_width=True)
+
+    tab_containers = st.tabs(['Về Hasaki', 'Mục Tiêu Dự Án', 'Thực Hiện Dự Án'])
+
+    with tab_containers[0]:
+        # Introduction Section
+        st.subheader("1. Tổng quan về HASAKI")
+        st.markdown("""
+        **HASAKI.VN** là hệ thống cửa hàng mỹ phẩm chính hãng và dịch vụ chăm sóc sắc đẹp chuyên sâu, với:  
+        - 🛒 **Hệ thống cửa hàng trải dài trên toàn quốc.**  
+        - 🤝 **Là đối tác phân phối chiến lược tại Việt Nam** của hàng loạt thương hiệu mỹ phẩm lớn.  
+        - 🌐 **Nền tảng trực tuyến** giúp khách hàng dễ dàng:
+            - Lựa chọn sản phẩm.  
+            - Xem đánh giá/nhận xét thực tế.  
+            - Đặt mua hàng nhanh chóng.  
+        """)
+    
+    with tab_containers[1]:        
+        # Problem Section
+        st.subheader("1. Vấn đề đặt ra 🚩")
+        st.markdown("""
+        🧐 **Câu hỏi đặt ra:**  
+        - Làm thế nào để **các nhãn hàng hiểu rõ hơn về khách hàng**?  
+        - Làm sao để biết **khách hàng đánh giá gì về sản phẩm**?  
+        - Làm cách nào để từ phản hồi đó, các nhãn hàng có thể:  
+            - **Cải thiện chất lượng sản phẩm.**  
+            - **Nâng cấp dịch vụ đi kèm.**  
+        """)
+        st.markdown("""
+            **Hasaki.vn sở hữu lượng lớn dữ liệu từ các bình luận và đánh giá của khách hàng, tuy nhiên:**
+            - 🚫 **Không thể xử lý phản hồi nhanh chóng và chính xác.**  
+            - 🤔 **Khó xác định phản hồi tích cực, tiêu cực hay trung tính.**  
+            - 🕒 **Tốn thời gian để sử dụng phản hồi cho việc cải thiện sản phẩm/dịch vụ.**
+            """)
+        
+        # Goal Section
+        st.subheader("2. Mục tiêu 🎯")
+        st.markdown("""
+        - 💡 **Thu thập và phân tích đánh giá của khách hàng** để cung cấp thông tin giá trị cho các nhãn hàng.  
+        - 📊 Giúp các nhãn hàng hiểu sâu hơn về **sở thích, nhu cầu và trải nghiệm thực tế** của khách hàng.  
+        - 🚀 Tăng sự hài lòng và trung thành của khách hàng thông qua việc cải tiến sản phẩm và dịch vụ.
+        """)
+    with tab_containers[2]:
+        # Objective Section
+        st.subheader("1. Mục tiêu 🎯")
+        st.markdown("""
+        🛠️ **Xây dựng hệ thống dự đoán cảm xúc trong phản hồi khách hàng**:
+        1. **Phân loại các bình luận thành 2 loại**: Tích Cực, Tiêu Cực
+        2. **Đánh giá chi tiết từng sản phẩm dựa vào các bình luận** 
+        3. **Giúp Hasaki và đối tác**:
+            - Hiểu nhanh ý kiến khách hàng.
+            - **Cải thiện sản phẩm/dịch vụ** dựa trên phản hồi thực tế.
+            - **Tăng mức độ hài lòng và trung thành** của khách hàng.
+        """)
+
+        # Solution Section
+        st.subheader("2. Giải pháp 💡")
+        st.markdown("""
+        🛠️ **Hệ thống dự đoán phản hồi sẽ được phát triển với các bước**:
+        1. **Thu thập dữ liệu**: Từ phần bình luận và đánh giá của khách hàng trên Hasaki.vn.  
+        2. **Xử lý dữ liệu**:
+            - Làm sạch dữ liệu (loại bỏ ký tự đặc biệt, stop words).
+            - Chuẩn hóa văn bản (chuyển về chữ thường, tách từ bằng NLP).  
+        3. **Xây dựng mô hình học máy**:
+            - Logistic Regression, Random Forest, hoặc mô hình transformer như BERT.  
+        4. **Triển khai hệ thống**:
+            - Tích hợp mô hình trên website để phân loại phản hồi theo thời gian thực.
+        5. **Đánh giá và cải thiện**:
+            - Dựa trên chỉ số Precision, Recall, F1-Score.
+            - Dực trên các reports: classification report, ROC_curve,...
+        """)
+
+        # Expected Outcomes Section
+        st.subheader("3. Kết quả kỳ vọng ✅")
+        st.markdown("""
+        - **Chính xác ≥90%** trong phân loại phản hồi khách hàng.  
+        - **Cung cấp phân tích thời gian thực** cho Hasaki và đối tác.  
+        - Tăng sự **hài lòng** và **lòng trung thành** của khách hàng thông qua các cải tiến.
+        """)
+
+
+#####################################
+
+elif page == "Home":
     # Banner Image
     image = Image.open("src/images/hasaki_banner_2.jpg")
     st.image(image, caption="Sentiment Analysis - Understand Your Customers", use_container_width=True)
