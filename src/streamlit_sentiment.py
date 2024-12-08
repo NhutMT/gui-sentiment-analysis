@@ -114,9 +114,12 @@ if page == "NewPage":
     st.image(image, 
              use_container_width=True)
 
-    tab_containers = st.tabs(['Về Hasaki', 'Mục Tiêu Dự Án', 'Thực Hiện Dự Án'])
+    tab_containers = st.tabs(['Hasaki Project', 'Mục Tiêu Dự Án', 'Thực Hiện Dự Án'])
 
     with tab_containers[0]:
+        # Title Section
+        st.title("Dự án HASAKI: Phân tích phản hồi khách hàng 🛍️")
+
         # Introduction Section
         st.subheader("1. Tổng quan về HASAKI")
         st.markdown("""
@@ -128,10 +131,9 @@ if page == "NewPage":
             - Xem đánh giá/nhận xét thực tế.  
             - Đặt mua hàng nhanh chóng.  
         """)
-    
-    with tab_containers[1]:        
+
         # Problem Section
-        st.subheader("1. Vấn đề đặt ra 🚩")
+        st.subheader("2. Vấn đề đặt ra 🚩")
         st.markdown("""
         🧐 **Câu hỏi đặt ra:**  
         - Làm thế nào để **các nhãn hàng hiểu rõ hơn về khách hàng**?  
@@ -139,22 +141,183 @@ if page == "NewPage":
         - Làm cách nào để từ phản hồi đó, các nhãn hàng có thể:  
             - **Cải thiện chất lượng sản phẩm.**  
             - **Nâng cấp dịch vụ đi kèm.**  
+
+        **Hasaki.vn sở hữu lượng lớn dữ liệu từ các bình luận và đánh giá của khách hàng, tuy nhiên:**
+        - 🚫 **Không thể xử lý phản hồi nhanh chóng và chính xác.**  
+        - 🤔 **Khó xác định phản hồi tích cực, tiêu cực hay trung tính.**  
+        - 🕒 **Tốn thời gian để sử dụng phản hồi cho việc cải thiện sản phẩm/dịch vụ.**
         """)
+
+        # Objective Section
+        st.subheader("3. Mục tiêu 🎯")
         st.markdown("""
-            **Hasaki.vn sở hữu lượng lớn dữ liệu từ các bình luận và đánh giá của khách hàng, tuy nhiên:**
-            - 🚫 **Không thể xử lý phản hồi nhanh chóng và chính xác.**  
-            - 🤔 **Khó xác định phản hồi tích cực, tiêu cực hay trung tính.**  
-            - 🕒 **Tốn thời gian để sử dụng phản hồi cho việc cải thiện sản phẩm/dịch vụ.**
-            """)
+        🛠️ **Xây dựng hệ thống dự đoán cảm xúc trong phản hồi khách hàng**:
+        1. **Phân loại các bình luận thành 2 loại**: Tích Cực, Tiêu Cực.
+        2. **Đánh giá chi tiết từng sản phẩm dựa vào các bình luận.** 
+        3. **Giúp Hasaki và đối tác**:
+            - Hiểu nhanh ý kiến khách hàng.
+            - **Cải thiện sản phẩm/dịch vụ** dựa trên phản hồi thực tế.
+            - **Tăng mức độ hài lòng và trung thành** của khách hàng.
+        """)
+
+        # Expected Outcomes Section
+        st.subheader("4. Kết quả kỳ vọng ✅")
+        st.markdown("""
+        - **Chính xác ≥90%** trong phân loại phản hồi khách hàng.  
+        - **Cung cấp phân tích thời gian thực** cho Hasaki và đối tác.  
+        - Tăng sự **hài lòng** và **lòng trung thành** của khách hàng thông qua các cải tiến.
+        """)
+
         
-        # Goal Section
-        st.subheader("2. Mục tiêu 🎯")
+          
+    with tab_containers[1]:  # Assuming the second tab is for the project process
+        st.subheader("Quy trình thực hiện 💡")
+
+        # Step 1: Data Collection
+        st.subheader("1. Thu thập dữ liệu 📝")
         st.markdown("""
-        - 💡 **Thu thập và phân tích đánh giá của khách hàng** để cung cấp thông tin giá trị cho các nhãn hàng.  
-        - 📊 Giúp các nhãn hàng hiểu sâu hơn về **sở thích, nhu cầu và trải nghiệm thực tế** của khách hàng.  
-        - 🚀 Tăng sự hài lòng và trung thành của khách hàng thông qua việc cải tiến sản phẩm và dịch vụ.
+        - **Nguồn dữ liệu:** Bình luận và đánh giá từ khách hàng trên Hasaki.vn.  
+        - **Mục tiêu:** Tạo tập dữ liệu chất lượng cao để đào tạo và đánh giá mô hình học máy.
         """)
+        image = Image.open("src/images/rv2.png")
+        st.image(image, caption="Đánh giá về sản phẩm nước Hoa Hồng Klairs Không Mùi Cho Da Nhạy Cảm 180ml Supple Preparation Unscented Toner",
+                  use_container_width=True)
+    
+     
+
+        # Step 2: Data Processing Section
+        st.subheader("2. Xử lý dữ liệu 🔄")
+
+        st.markdown("""
+        ### Mục tiêu:
+        Chuẩn bị và làm sạch dữ liệu bình luận để sẵn sàng cho các bước phân tích và xây dựng mô hình.
+
+        ### Quy trình xử lý:
+        1. **Làm sạch dữ liệu:**
+        - Loại bỏ ký tự đặc biệt (ví dụ: `!`, `@`, `#`, ...).
+        - Xóa số và các từ không mang ý nghĩa ngữ nghĩa (stop words).
+        2. **Chuẩn hóa văn bản:**
+        - Chuyển toàn bộ văn bản về chữ thường.
+        - Chuẩn hóa ký tự lặp lại (ví dụ: `"đẹp quáaaa"` → `"đẹp quá"`).
+        - Sử dụng công cụ NLP để tách từ và chuẩn bị dữ liệu.
+        3. **Chuyển đổi ngôn ngữ:**
+        - Thay thế các từ teencode thành dạng chuẩn (ví dụ: `"hok"` → `"không"`).
+        - Dịch từ tiếng Anh sang tiếng Việt (nếu có).
+        4. **Xử lý ngữ pháp (POS Tagging):**
+        - Phân tích từ loại và gán nhãn từ vựng để hiểu cấu trúc câu.
+        5. **Tạo phân đoạn (Chunking):**
+        - Chia nhỏ văn bản thành các khối thông tin có ý nghĩa để dễ dàng xử lý và phân tích.
+
+        ### Kết quả kỳ vọng:
+        - Dữ liệu sạch và chuẩn hóa, lưu trữ dưới dạng cột văn bản đã xử lý và phân đoạn.
+        """)
+        image = Image.open("src/images/output1.png")
+        st.image(image, caption="Nội dung bình luận trước và sau khi xử lý",
+                  use_container_width=True)
+        
+        # Step 3: Labeling and Sentiment Analysis Section
+        st.subheader("3. Gắn nhãn và phân tích cảm xúc 🏷️📊")
+
+        st.markdown("""
+        ### Mục tiêu:
+        - Gắn nhãn (label) cho dữ liệu bình luận để sử dụng trong phân tích cảm xúc hoặc các mô hình học máy giám sát.
+        - Phân tích số lượng đánh giá theo sản phẩm và cảm xúc (tích cực hoặc tiêu cực), đồng thời tính tỷ lệ cảm xúc để hiểu rõ phản hồi của khách hàng.
+
+        ### Quy trình thực hiện:
+        1. **Gắn nhãn bình luận:**
+        - **Xác định từ tích cực và tiêu cực:** Tìm và đếm các từ tích cực (ví dụ: `tốt`, `đẹp`, `thích`) và tiêu cực (ví dụ: `xấu`, `tệ`, `thất vọng`) trong bình luận.
+        - **Tính toán tỷ lệ từ:**
+            - **Tỷ lệ từ tích cực:** Tổng số từ tích cực chia cho tổng số từ trong bình luận.
+            - **Tỷ lệ từ tiêu cực:** Tổng số từ tiêu cực chia cho tổng số từ trong bình luận.
+        - **Phân loại bình luận:**
+            - **Tích cực:** Khi tỷ lệ từ tích cực cao hơn tiêu cực và >= 2.
+            - **Tiêu cực:** Các trường hợp còn lại.
+
+        2. **Phân tích cảm xúc theo sản phẩm:**
+        - **Tổng hợp đánh giá theo sản phẩm và cảm xúc:**
+            - Đếm số lượng đánh giá tích cực và tiêu cực theo từng sản phẩm.
+            - Gộp tất cả các bình luận, từ tích cực, và từ tiêu cực thành chuỗi văn bản.
+        - **Tính tổng số lượng đánh giá mỗi sản phẩm:** Tổng số lượng đánh giá từ tất cả các cảm xúc cho từng sản phẩm.
+        - **Tính tỷ lệ cảm xúc:**
+            - **Công thức:** `(Số lượng đánh giá theo cảm xúc / Tổng số đánh giá) * 100`.
+            - Kết quả được lưu trong cột `Sentiment_Rate (%)`.
+
+        ### Kết quả kỳ vọng:
+        - Dữ liệu bình luận được gắn nhãn:
+        - `1` cho bình luận **tích cực**.
+        - `0` cho bình luận **tiêu cực**.
+        - Thống kê số lượng đánh giá tích cực, tiêu cực, và tổng số đánh giá theo từng sản phẩm.
+        - Tính tỷ lệ phần trăm cảm xúc tích cực hoặc tiêu cực cho mỗi sản phẩm, hỗ trợ phân tích xu hướng cảm xúc của khách hàng.
+        """)
+        image = Image.open("src/images/label.png")
+        st.image(image, caption="Dữ liệu sau khi được label",
+                  use_container_width=True)
+        # Step 4: Detailed Product Analysis Section
+        st.subheader("5. Phân tích chi tiết sản phẩm 🛍️")
+
+        st.markdown("""
+        ### Mục tiêu:
+        Cung cấp thông tin chi tiết về sản phẩm, bao gồm:
+        - Thông tin cơ bản (tên sản phẩm, giá bán, mô tả, điểm đánh giá trung bình).
+        - Phân tích đánh giá cảm xúc (tích cực và tiêu cực).
+        - Hình dung dữ liệu thông qua biểu đồ và Word Cloud.
+
+        ### Quy trình:
+        1. **Hiển thị thông tin cơ bản về sản phẩm**:
+        - Tên sản phẩm, giá bán, giá gốc, phân loại, mô tả, điểm đánh giá trung bình.
+        2. **Phân tích đánh giá cảm xúc**:
+        - Hiển thị tỷ lệ cảm xúc tích cực và tiêu cực bằng biểu đồ hình tròn.
+        - Tạo Word Cloud cho các từ tích cực và tiêu cực.
+        3. **Kiểm tra dữ liệu**:
+        - Nếu không có dữ liệu, thông báo sẽ được hiển thị để người dùng biết.
+        """)
+        image = Image.open("src/images/info.png")
+        st.image(image, caption="Thông tin sản phẩm bạn đang tìm kiếm",
+                  use_container_width=True)
+        image = Image.open("src/images/pie.png")
+        st.image(image, caption="Thông tin sản phẩm bạn đang tìm kiếm",
+                  use_container_width=True)
+        image = Image.open("src/images/pos.png")
+        st.image(image, caption="Thông tin sản phẩm bạn đang tìm kiếm",
+                  use_container_width=True)
+        image = Image.open("src/images/neg.png")
+        st.image(image, caption="Thông tin sản phẩm bạn đang tìm kiếm",
+                  use_container_width=True)
+
+        # Step 3: Model Development
+        st.subheader("3. Xây dựng mô hình học máy 🤖")
+        st.markdown("""
+        - **Các mô hình dự kiến sử dụng**:
+            - Logistic Regression.  
+            - Random Forest.  
+            - Mô hình transformer như BERT để xử lý văn bản tự nhiên.  
+        - **Lý do chọn mô hình**: Đánh đổi giữa độ chính xác và hiệu suất xử lý.
+        """)
+        #Step 4: Evaluation and Improvement
+        st.subheader("4. Đánh giá và cải thiện 📊")
+        st.markdown("""
+        - **Tiêu chí đánh giá**:
+            - Precision.  
+            - Recall.  
+            - F1-Score.  
+        - **Báo cáo hỗ trợ**:
+            - Classification Report.  
+            - ROC Curve để đo lường hiệu quả.  
+        - **Quy trình cải tiến**:
+            - Dựa trên các chỉ số và phản hồi từ đội ngũ sử dụng.
+        """)
+        # Step 5: System Deployment
+        st.subheader("5. Triển khai hệ thống 🚀")
+        st.markdown("""
+        - **Tích hợp mô hình** trên website của Hasaki.vn.  
+        - **Phân loại phản hồi theo thời gian thực**:
+            - Phân loại bình luận thành Tích cực hoặc Tiêu cực.  
+            - Hiển thị phân tích nhanh chóng cho người quản lý.  
+        """)
+
+
     with tab_containers[2]:
+        st.title("Quy trình thực hiện dự án 🛍️")
         # Objective Section
         st.subheader("1. Mục tiêu 🎯")
         st.markdown("""
@@ -248,7 +411,7 @@ elif page == "Home":
 elif page == "Hasaki":
     
     # Title
-    st.title("🌟 **Giới thiệu về HASAKI.VN** 🌟")
+    st.title("🌟 **Giới thiệu về HASAKI Project** 🌟")
     # Banner Image
     image = Image.open("src/images/hasaki_banner_2.jpg")
     st.image(image, caption="Hasaki.VN - Quality & Trust", use_container_width=True)
