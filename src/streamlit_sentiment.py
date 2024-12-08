@@ -613,8 +613,7 @@ elif page == "Sentiment Analysis":
     # Add Banner Image
     st.image(
         "src/images/classify.png", 
-        caption="✨ **Discover customer insights for flawless skincare experiences**",
-        use_container_width=True,
+        caption="✨ **Discover customer insights for flawless skincare experiences**"
     )
 
     # Introductory Text
