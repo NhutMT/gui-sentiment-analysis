@@ -10,6 +10,23 @@ from ultils import helper, product_analysis
 st.set_page_config(page_title="Sentiment Analysis System", page_icon=":shopping_cart:", layout="wide")
 
 menu = ["Project Summary", "Sentiment Analysis", "Product Analysis", ]
+button_style = """
+    <style>
+    .stButton>button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 24px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 12px;
+    }
+    </style>
+    """
 st.sidebar.title("Đồ Án Tốt Nghiệp")
 st.sidebar.markdown(
     """
@@ -380,8 +397,8 @@ if page == "Project Summary":
 #####################################
 
 elif page == "Sentiment Analysis":
-    image = Image.open("src/images/process.png")
-    st.image(image, caption="Hasaki.VN - Quality & Trust")
+    # image = Image.open("src/images/process.png")
+    # st.image(image, caption="Hasaki.VN - Quality & Trust")
 
     pkl_filemodel = "src/models/logreg_model.pkl" 
     with open(pkl_filemodel, 'rb') as file:  
@@ -396,21 +413,22 @@ elif page == "Sentiment Analysis":
         scaler = pickle.load(file)
 
     # Header
-    st.title("🌟 Skincare Feedback Analyzer 🌟")
-    st.write("Is your product **glowing up** your customers or causing a **breakout**? Let's find out!")
+    st.title("🌟 Phân Tích Phản Hồi 🌟")
+    # st.write("Is your product **glowing up** your customers or causing a **breakout**? Let's find out!")
 
-    # Add Banner Image
-    st.image(
-        "src/images/classify.png", 
-        caption="✨ **Discover customer insights for flawless skincare experiences**"
-    )
+    # # Add Banner Image
+    # st.image(
+    #     "src/images/classify.png", 
+    #     caption="✨ **Discover customer insights for flawless skincare experiences**",
+    #     use_column_width=True
+    # )
 
     # Introductory Text
     st.markdown("""
-        🧖‍♀️ **What does this app do?**  
-        - Analyzes customer reviews on your skincare products.  
-        - Detects if the feedback is **Positive** 💖 (smooth skin ahead!) or **Negative** 💔 (time to rethink).  
-        - Helps you make data-driven decisions to keep your customers glowing!  
+        🧖‍♀️ **Mục đích chức năng**  
+        - Phân tích đánh giá của khách hàng về các sản phẩm chăm sóc da.  
+        - Phát hiện những phản hồi thuộc nhóm **Positive** 💖 hoặc **Negative** 💔.  
+        - Giúp bạn đưa ra quyết định dựa trên dữ liệu để giữ cho khách hàng của bạn luôn rạng rỡ!  
     """)
 
     # Streamlit App
@@ -418,11 +436,17 @@ elif page == "Sentiment Analysis":
 
     flag = False
     lines = None
-    data_type = st.radio("How would you like to provide customer feedback?", options=("📝 Type it manually", "📁 Upload a file"))
+    data_type = st.radio("Chọn hình thức gửi phản hồi", options=("📝 Nhập từ bàn phím", "📁 Tải 1 file phản hồi"))
 
-    if data_type == "📁 Upload a file":
+    if data_type == "📁 Tải 1 file phản hồi":
         # Upload file
-        uploaded_file = st.file_uploader("Upload a CSV or TXT file with customer feedback", type=['txt', 'csv'])
+        uploaded_file = st.file_uploader("Vui lòng chọn file tải lên (*.txt, *.csv):", type=['txt', 'csv'])
+        
+        # Add sample data link from data folder for download
+        with open("src/data/sample_feedback.txt", "r") as file:
+            sample_data = file.read()
+        st.download_button(label="📥 Download Sample Data", data=sample_data, file_name="sample_feedback.txt", mime="text/plain")
+
         if uploaded_file is not None:
             try:
                 # Read data
@@ -438,52 +462,57 @@ elif page == "Sentiment Analysis":
             except Exception as e:
                 st.error(f"🚨 Oops! Couldn’t read the file: {e}")
 
-    if data_type == "📝 Type it manually":
-        content = st.text_area(label="Write a customer's feedback:", placeholder="e.g., This moisturizer is life-changing!")
+    if data_type == "📝 Nhập từ bàn phím":
+        content = st.text_area(label="Nội dung phản hồi (có thể nhập nhiều phản hồi khi 'Enter' xuống dòng):", placeholder="e.g., Sản phẩm này rất tốt!")
         if content != "":
-            # contents = content.split("\n")
             lines = content.split("\n")
             flag = True
 
-    if flag:
-        st.subheader("🧐 Processed Feedback")
-        if len(lines) > 0:
-            st.code(lines, language="plaintext")
+    
+    st.markdown(button_style, unsafe_allow_html=True)
+    if st.button("Phân Tích"):
+        if flag:
+            st.subheader("🧐 Processed Feedback")
+            if len(lines) > 0:
+                st.code(lines, language="plaintext")
 
-            new_reviews = [str(line) for line in lines]
-            
-            # Transform data using the vectorizer
-            x_new = tfidf_vectorizer.transform(new_reviews)
+                new_reviews = [str(line) for line in lines]
+                
+                # Transform data using the vectorizer
+                x_new = tfidf_vectorizer.transform(new_reviews)
 
-            # Create a DataFrame for the new reviews
-            df_new_review = pd.DataFrame(x_new.toarray(), columns=tfidf_vectorizer.get_feature_names_out())
+                # Create a DataFrame for the new reviews
+                df_new_review = pd.DataFrame(x_new.toarray(), columns=tfidf_vectorizer.get_feature_names_out())
 
-            # Add and scale the 'content_length' feature like you did during training
-            df_new_review['content_length'] = [len(review) for review in new_reviews]
-            df_new_review['content_length_scaled'] = scaler.transform(df_new_review[['content_length']]) # Use the same scaler from training
+                # Add and scale the 'content_length' feature like you did during training
+                df_new_review['content_length'] = [len(review) for review in new_reviews]
+                df_new_review['content_length_scaled'] = scaler.transform(df_new_review[['content_length']]) # Use the same scaler from training
 
-            # Combine features
-            new_reviews_combined = sp.hstack((x_new, df_new_review[['content_length_scaled']]))
+                # Combine features
+                new_reviews_combined = sp.hstack((x_new, df_new_review[['content_length_scaled']]))
 
-            # Predict sentiment
-            y_pred_new = lgr_model_sentiment.predict(new_reviews_combined)
-            
-            # Map predictions to sentiment labels
-            sentiment_labels = {0: "💔 Negative", 1: "💖 Positive"}
-            predictions = [sentiment_labels[pred] for pred in y_pred_new]
-            
-            # Display predictions
-            st.subheader("🎯 Feedback Analysis Results:")
-            for i, line in enumerate(lines):
-                st.markdown(f"""
-                - **Feedback**: {line}  
-                - **Sentiment**: {predictions[i]}  
-                """)
-                # Add fun reactions based on sentiment
-                if predictions[i] == "💖 Positive":
-                    st.success("✨ Skincare success! Your customers are glowing!")
-                else:
-                    st.error("🛑 Skincare alert! Looks like there’s room for improvement.")
+                # Predict sentiment
+                y_pred_new = lgr_model_sentiment.predict(new_reviews_combined)
+                
+                # Map predictions to sentiment labels
+                sentiment_labels = {0: "💔 Negative", 1: "💖 Positive"}
+                predictions = [sentiment_labels[pred] for pred in y_pred_new]
+                
+                # Display predictions
+                st.subheader("🎯 Feedback Analysis Results:")
+                for i, line in enumerate(lines):
+                    st.markdown(f"""
+                    - **Feedback**: {line}  
+                    - **Sentiment**: {predictions[i]}  
+                    """)
+                    # Add fun reactions based on sentiment
+                    if predictions[i] == "💖 Positive":
+                        st.success("✨ Skincare success! Your customers are glowing!")
+                    else:
+                        st.error("🛑 Skincare alert! Looks like there’s room for improvement.")
+
+#####################################
+
 elif page == "Product Analysis":
     st.title("Phân Tích Sản Phẩm")
     st.write("Dựa vào kết quả phân tích, Hasaki và các đối tác sẽ hiểu được cảm nhận của khách hàng về sản phẩm.")
@@ -497,7 +526,10 @@ elif page == "Product Analysis":
     
     if input_method == "Nhập mã/tên sản phẩm":
         # Nhập mã sản phẩm hoặc tên sản phẩm
-        search_criteria = st.text_input("Nhập mã hoặc tên sản phẩm:")
+        search_criteria = st.text_input("Nhập mã hoặc tên đầy đủ của sản phẩm:")
+        
+        # Add sample text for product name and product code
+        st.markdown("📝 **Ví dụ tên sản phẩm:** Nước Hoa Hồng Klairs Không Mùi Cho Da Nhạy Cảm 180ml  \n📝 **Ví dụ mã sản phẩm:** 318900012")
         
         if (search_criteria != "" and search_criteria.isdigit()):
             result = df_products[df_products["ma_san_pham"] == eval(search_criteria)]
@@ -512,14 +544,14 @@ elif page == "Product Analysis":
                 product_code = result["ma_san_pham"].iloc[0]
             else:
                 st.write("Không tìm thấy sản phẩm!")
-        else:
-            st.write("Nhập mã hoặc tên sản phẩm!")
+        
     else:   
         # Chọn tên sản phẩm từ dropdown
         selected_item = st.selectbox("Chọn tên sản phẩm:", df_products['ten_san_pham'].unique())
         product_code = df_products[df_products["ten_san_pham"] == selected_item]["ma_san_pham"].iloc[0]
-    
+        # st.write(product_code)
     # Hiển thị thông tin sản phẩm
+    st.markdown(button_style, unsafe_allow_html=True)
     if st.button("Phân Tích"):
         if not product_code:
             st.error("Mã sản phẩm không tồn tại trong cơ sở dữ liệu. Vui lòng chọn hoặc nhập mã sản phẩm hợp lệ.")
