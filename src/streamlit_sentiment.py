@@ -396,6 +396,9 @@ if page == "Project Summary":
 #####################################
 
 elif page == "Sentiment Analysis":
+    # # Banner Image
+    # image = Image.open("src/images/hasaki_banner.jpg")
+    # st.image(image)
 
     pkl_filemodel = "src/models/logreg_model.pkl" 
     with open(pkl_filemodel, 'rb') as file:  
@@ -475,14 +478,17 @@ elif page == "Sentiment Analysis":
 
                 # Create a DataFrame with content as new reviews and column name as raw_content
                 new_reviews = [str(line) for line in lines]
-                df = pd.DataFrame(new_reviews, columns=['raw_content'])
+                
+                # # Create a DataFrame with content is new review and column name is raw_content
+                # df = pd.DataFrame(new_reviews, columns=['raw_content'])
 
-                # Call clean_comment function (replace with your actual function implementation)
-                df_new = content_process.clean_comment(df, 'raw_content', 'cleaned_content')
-                
-                # Display cleaned content
-                # st.write(df_new['cleaned_content'])
-                
+                # ## Call clean content.
+                # clean_content(df,....)
+
+                # ## get result
+                # df['cleaned_content']
+
+
                 # Transform data using the vectorizer
                 x_new = tfidf_vectorizer.transform(df_new['cleaned_content'])
 
