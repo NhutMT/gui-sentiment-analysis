@@ -417,6 +417,10 @@ elif page == "Sentiment Analysis":
     with open(pkl_svm, 'rb') as file:  
         svm_model_sentiment = pickle.load(file)
 
+    pkl_svm='src/models/svm_model.pkl'
+    with open(pkl_svm, 'rb') as file:  
+        svm_model_sentiment = pickle.load(file)
+
     # Header
     st.title("🌟 Phân Tích Phản Hồi 🌟")
 
@@ -470,8 +474,8 @@ elif page == "Sentiment Analysis":
     if st.button("Phân Tích"):
         if flag:
             st.subheader("🧐 Processed Feedback")
-            # remove empty or blank lines
-            lines = [line for line in lines if line.strip() != ""]
+            # # remove empty or blank lines
+            # lines = [line for line in lines if line.strip() != ""]
             if len(lines) > 0:
                 # st.code(lines, language="plaintext")
 
@@ -486,18 +490,29 @@ elif page == "Sentiment Analysis":
                 # Display cleaned content
                 st.write(df_new['cleaned_content'])
 
+
+                # df_new = df_new[df_new['cleaned_content'].str.strip() != ""]
+                # if df_new.empty:
+                #     raise ValueError("No valid documents after preprocessing. Check your clean_comment function.")
+                # # Remove empty or whitespace-only rows
+                # df_new = df_new[df_new['cleaned_content'].str.strip() != ""]
+
+                # # Check if cleaned_content is empty after filtering
+                # if df_new.empty:
+                #     raise ValueError("No valid documents after preprocessing. Check your clean_comment function.")
+
+                # # Initialize the vectorizer with less restrictive parameters
+                # tfidf_vectorizer = TfidfVectorizer(stop_words=None, min_df=1)
+
+                # # Fit and transform the cleaned content
+                # x_new = tfidf_vectorizer.fit_transform(df_new['cleaned_content'])
+
+                # tfidf_vectorizer = tfidf_vectorizer(stop_words=None, min_df=1)
+
+
+                # tfidf_vectorizer.fit(df_new['cleaned_content']) 
                 # Transform data using the vectorizer
-                x_new = tfidf_vectorizer.transform(df_new['cleaned_content'])
-
-                # ## Call clean content.
-                # df_new_review=clean_comment(df, 'raw_content', 'cleaned_content')
-
-                # # ## get result
-                # # df['cleaned_content']
-                # df_new_review['cleaned_content']
-
-                # # Transform data using the vectorizer
-                # x_new = tfidf_vectorizer.transform(new_reviews)
+                x_new = tfidf_vectorizer.fit_transform(df_new['cleaned_content'])
 
                 # Create a DataFrame for the new reviews
                 df_new_review = pd.DataFrame(x_new.toarray(), columns=tfidf_vectorizer.get_feature_names_out())
@@ -510,8 +525,7 @@ elif page == "Sentiment Analysis":
                 new_reviews_combined = sp.hstack((x_new, df_new_review[['content_length_scaled']]))
 
                 # Predict sentiment by Logistic 
-                y_pred_new = lgr_model_sentiment.predict(new_reviews_combined)
-
+                # y_pred_new = lgr_model_sentiment.predict(new_reviews_combined)
                 # Predict sentiment by svm 
                 # y_pred_new = svm_model_sentiment.predict(new_reviews_combined)
                 
