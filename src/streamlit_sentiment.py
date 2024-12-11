@@ -4,7 +4,7 @@ import pickle
 import pandas as pd
 import scipy.sparse as sp
 
-from ultils import content_process, helper, product_analysis
+from ultils import helper, product_analysis, process_cmt
 
 st.set_page_config(page_title="Sentiment Analysis System", page_icon=":shopping_cart:", layout="wide")
 
@@ -434,8 +434,7 @@ elif page == "Sentiment Analysis":
     flag = False
     lines = None
     data_type = st.radio("Chọn hình thức gửi phản hồi", options=("📝 Nhập từ bàn phím", "📁 Tải 1 file phản hồi"))
-    
-    # data_type = "📝 Tải 1 file"
+# data_type = "📝 Tải 1 file"
     if data_type == "📁 Tải 1 file phản hồi":
         # Upload file
         uploaded_file = st.file_uploader("Vui lòng chọn file tải lên (*.txt, *.csv):", type=['txt', 'csv'])
@@ -459,8 +458,7 @@ elif page == "Sentiment Analysis":
                 flag = True
             except Exception as e:
                 st.error(f"🚨 Oops! Couldn’t read the file: {e}")
-
-    # data_type = "📝 Nhập từ bàn phím"
+# data_type = "📝 Nhập từ bàn phím"
     if data_type == "📝 Nhập từ bàn phím":
         content = st.text_area(label="Nội dung phản hồi (có thể nhập nhiều phản hồi khi 'Enter' xuống dòng):", placeholder="e.g., Sản phẩm này rất tốt!")
         if content != "":
@@ -477,20 +475,28 @@ elif page == "Sentiment Analysis":
                 # st.code(lines, language="plaintext")
 
                 # Create a DataFrame with content as new reviews and column name as raw_content
+                # Create a DataFrame with content as new reviews and column name as raw_content
                 new_reviews = [str(line) for line in lines]
-                
-                # # Create a DataFrame with content is new review and column name is raw_content
-                # df = pd.DataFrame(new_reviews, columns=['raw_content'])
+                df = pd.DataFrame(new_reviews, columns=['raw_content'])
 
-                # ## Call clean content.
-                # clean_content(df,....)
+                # Call clean_comment function (replace with your actual function implementation)
+                df_new = process_cmt.clean_comment(df, 'raw_content', 'cleaned_content')
 
-                # ## get result
-                # df['cleaned_content']
-
+                # Display cleaned content
+                st.write(df_new['cleaned_content'])
 
                 # Transform data using the vectorizer
-                x_new = tfidf_vectorizer.transform(df_new['cleaned_content'])
+                x_new = tfidf_vectorizer.transform(df_new['cleaned_content'].values)
+
+                # ## Call clean content.
+                # df_new_review=clean_comment(df, 'raw_content', 'cleaned_content')
+
+                # # ## get result
+                # # df['cleaned_content']
+                # df_new_review['cleaned_content']
+
+                # # Transform data using the vectorizer
+                # x_new = tfidf_vectorizer.transform(new_reviews)
 
                 # Create a DataFrame for the new reviews
                 df_new_review = pd.DataFrame(x_new.toarray(), columns=tfidf_vectorizer.get_feature_names_out())
@@ -500,7 +506,7 @@ elif page == "Sentiment Analysis":
                 df_new_review['content_length_scaled'] = scaler.transform(df_new_review[['content_length']]) # Use the same scaler from training
 
                 # Combine features
-                new_reviews_combined = sp.hstack((x_new, df_new_review[['content_length_scaled']]))
+                new_reviews_combined = sp.hstack((x_new.toarray(), df_new_review[['content_length_scaled']]))
 
                 # Predict sentiment by Logistic 
                 y_pred_new = lgr_model_sentiment.predict(new_reviews_combined)
@@ -599,6 +605,11 @@ elif page == "Product Analysis":
             with col2:
                 st.write("\nTop 50 từ Negative về sản phẩm:")
                 product_analysis.wcloud_visualize(s_negative, 'Neg_words', 'Word Cloud - Negative')
+
+
+
+
+
 
 
 
