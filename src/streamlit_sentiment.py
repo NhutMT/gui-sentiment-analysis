@@ -596,12 +596,3 @@ elif page == "Product Analysis":
             with col2:
                 st.write("\nTop 50 từ Negative về sản phẩm:")
                 product_analysis.wcloud_visualize(s_negative, 'Neg_words', 'Word Cloud - Negative')
-
-
-
-
-
-
-
-
-
