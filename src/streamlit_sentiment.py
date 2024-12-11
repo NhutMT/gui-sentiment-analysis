@@ -483,6 +483,13 @@ elif page == "Sentiment Analysis":
                 
                 # Display cleaned content
                 st.write(df_new['cleaned_content'])
+                df_nan = df_new[df_new['cleaned_content'].isna()]
+                df_new.dropna(subset=['cleaned_content'], inplace=True)
+                df_new = df_new[df_new['cleaned_content'] != ""]
+
+                st.write("Dữ liệu bị thiếu: ", df_nan.shape)
+                
+                st.write(df_new['cleaned_content'])
                 
                 # Transform data using the vectorizer
                 x_new = tfidf_vectorizer.transform(df_new['cleaned_content'])
@@ -498,10 +505,11 @@ elif page == "Sentiment Analysis":
                 new_reviews_combined = sp.hstack((x_new, df_new_review[['content_length_scaled']]))
 
                 # Predict sentiment by Logistic 
-                # y_pred_new = lgr_model_sentiment.predict(new_reviews_combined)
+                y_pred_new = lgr_model_sentiment.predict(new_reviews_combined)
 
                 # Predict sentiment by svm 
-                y_pred_new = svm_model_sentiment.predict(new_reviews_combined)
+                # y_pred_new = svm_model_sentiment.predict(new_reviews_combined)
+                
                 # Map predictions to sentiment labels
                 sentiment_labels = {0: "💔 Negative", 1: "💖 Positive"}
                 predictions = [sentiment_labels[pred] for pred in y_pred_new]
