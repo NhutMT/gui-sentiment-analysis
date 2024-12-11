@@ -396,9 +396,6 @@ if page == "Project Summary":
 #####################################
 
 elif page == "Sentiment Analysis":
-    # # Banner Image
-    # image = Image.open("src/images/hasaki_banner.jpg")
-    # st.image(image)
 
     pkl_filemodel = "src/models/logreg_model.pkl" 
     with open(pkl_filemodel, 'rb') as file:  
@@ -438,7 +435,8 @@ elif page == "Sentiment Analysis":
     flag = False
     lines = None
     data_type = st.radio("Chọn hình thức gửi phản hồi", options=("📝 Nhập từ bàn phím", "📁 Tải 1 file phản hồi"))
-# data_type = "📝 Tải 1 file"
+    
+    # data_type = "📝 Tải 1 file"
     if data_type == "📁 Tải 1 file phản hồi":
         # Upload file
         uploaded_file = st.file_uploader("Vui lòng chọn file tải lên (*.txt, *.csv):", type=['txt', 'csv'])
@@ -462,7 +460,8 @@ elif page == "Sentiment Analysis":
                 flag = True
             except Exception as e:
                 st.error(f"🚨 Oops! Couldn’t read the file: {e}")
-# data_type = "📝 Nhập từ bàn phím"
+
+    # data_type = "📝 Nhập từ bàn phím"
     if data_type == "📝 Nhập từ bàn phím":
         content = st.text_area(label="Nội dung phản hồi (có thể nhập nhiều phản hồi khi 'Enter' xuống dòng):", placeholder="e.g., Sản phẩm này rất tốt!")
         if content != "":
@@ -474,8 +473,7 @@ elif page == "Sentiment Analysis":
     if st.button("Phân Tích"):
         if flag:
             st.subheader("🧐 Processed Feedback")
-            # # remove empty or blank lines
-            # lines = [line for line in lines if line.strip() != ""]
+
             if len(lines) > 0:
                 # st.code(lines, language="plaintext")
 
@@ -486,33 +484,12 @@ elif page == "Sentiment Analysis":
 
                 # Call clean_comment function (replace with your actual function implementation)
                 df_new = process_cmt.clean_comment(df, 'raw_content', 'cleaned_content')
-
+                
                 # Display cleaned content
                 st.write(df_new['cleaned_content'])
-
-
-                # df_new = df_new[df_new['cleaned_content'].str.strip() != ""]
-                # if df_new.empty:
-                #     raise ValueError("No valid documents after preprocessing. Check your clean_comment function.")
-                # # Remove empty or whitespace-only rows
-                # df_new = df_new[df_new['cleaned_content'].str.strip() != ""]
-
-                # # Check if cleaned_content is empty after filtering
-                # if df_new.empty:
-                #     raise ValueError("No valid documents after preprocessing. Check your clean_comment function.")
-
-                # # Initialize the vectorizer with less restrictive parameters
-                # tfidf_vectorizer = TfidfVectorizer(stop_words=None, min_df=1)
-
-                # # Fit and transform the cleaned content
-                # x_new = tfidf_vectorizer.fit_transform(df_new['cleaned_content'])
-
-                # tfidf_vectorizer = tfidf_vectorizer(stop_words=None, min_df=1)
-
-
-                # tfidf_vectorizer.fit(df_new['cleaned_content']) 
+                
                 # Transform data using the vectorizer
-                x_new = tfidf_vectorizer.fit_transform(df_new['cleaned_content'])
+                x_new = tfidf_vectorizer.transform(df_new['cleaned_content'])
 
                 # Create a DataFrame for the new reviews
                 df_new_review = pd.DataFrame(x_new.toarray(), columns=tfidf_vectorizer.get_feature_names_out())
@@ -526,6 +503,7 @@ elif page == "Sentiment Analysis":
 
                 # Predict sentiment by Logistic 
                 # y_pred_new = lgr_model_sentiment.predict(new_reviews_combined)
+
                 # Predict sentiment by svm 
                 # y_pred_new = svm_model_sentiment.predict(new_reviews_combined)
                 
