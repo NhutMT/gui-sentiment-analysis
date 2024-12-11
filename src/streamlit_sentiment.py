@@ -2,10 +2,9 @@ import streamlit as st
 from PIL import Image
 import pickle
 import pandas as pd
-import numpy as np
 import scipy.sparse as sp
 
-from ultils import helper, product_analysis, process_cmt
+from ultils import content_process, helper, product_analysis
 
 st.set_page_config(page_title="Sentiment Analysis System", page_icon=":shopping_cart:", layout="wide")
 
@@ -469,27 +468,20 @@ elif page == "Sentiment Analysis":
     st.markdown(button_style, unsafe_allow_html=True)
     if st.button("Phân Tích"):
         if flag:
-            st.subheader("🧐 Processed Feedback")
+            # st.subheader("🧐 Processed Feedback")
 
             if len(lines) > 0:
-                st.code(lines, language="plaintext")
+                # st.code(lines, language="plaintext")
 
                 # Create a DataFrame with content as new reviews and column name as raw_content
                 new_reviews = [str(line) for line in lines]
                 df = pd.DataFrame(new_reviews, columns=['raw_content'])
 
                 # Call clean_comment function (replace with your actual function implementation)
-                df_new = process_cmt.clean_comment(df, 'raw_content', 'cleaned_content')
+                df_new = content_process.clean_comment(df, 'raw_content', 'cleaned_content')
                 
                 # Display cleaned content
-                st.write(df_new['cleaned_content'])
-                df_nan = df_new[df_new['cleaned_content'].isna()]
-                df_new.dropna(subset=['cleaned_content'], inplace=True)
-                df_new = df_new[df_new['cleaned_content'] != ""]
-
-                st.write("Dữ liệu bị thiếu: ", df_nan.shape)
-                
-                st.write(df_new['cleaned_content'])
+                # st.write(df_new['cleaned_content'])
                 
                 # Transform data using the vectorizer
                 x_new = tfidf_vectorizer.transform(df_new['cleaned_content'])
@@ -539,7 +531,6 @@ elif page == "Product Analysis":
     input_method = st.radio("Chọn phương thức nhập liệu:", ["Chọn tên sản phẩm", "Nhập mã/tên sản phẩm"])
 
     product_code = None
-    
     if input_method == "Nhập mã/tên sản phẩm":
         # Nhập mã sản phẩm hoặc tên sản phẩm
         search_criteria = st.text_input("Nhập mã hoặc tên đầy đủ của sản phẩm:")
@@ -565,7 +556,7 @@ elif page == "Product Analysis":
         # Chọn tên sản phẩm từ dropdown
         selected_item = st.selectbox("Chọn tên sản phẩm:", df_products['ten_san_pham'].unique())
         product_code = df_products[df_products["ten_san_pham"] == selected_item]["ma_san_pham"].iloc[0]
-        # st.write(product_code)
+
     # Hiển thị thông tin sản phẩm
     st.markdown(button_style, unsafe_allow_html=True)
     if st.button("Phân Tích"):
