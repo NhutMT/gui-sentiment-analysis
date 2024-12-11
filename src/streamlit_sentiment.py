@@ -486,7 +486,7 @@ elif page == "Sentiment Analysis":
                 st.write(df_new['cleaned_content'])
 
                 # Transform data using the vectorizer
-                x_new = tfidf_vectorizer.transform(df_new['cleaned_content'].values)
+                x_new = tfidf_vectorizer.transform(df_new['cleaned_content'])
 
                 # ## Call clean content.
                 # df_new_review=clean_comment(df, 'raw_content', 'cleaned_content')
@@ -506,7 +506,7 @@ elif page == "Sentiment Analysis":
                 df_new_review['content_length_scaled'] = scaler.transform(df_new_review[['content_length']]) # Use the same scaler from training
 
                 # Combine features
-                new_reviews_combined = sp.hstack((x_new.toarray(), df_new_review[['content_length_scaled']]))
+                new_reviews_combined = sp.hstack((x_new, df_new_review[['content_length_scaled']]))
 
                 # Predict sentiment by Logistic 
                 y_pred_new = lgr_model_sentiment.predict(new_reviews_combined)
