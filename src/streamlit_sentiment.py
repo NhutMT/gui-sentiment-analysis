@@ -4,7 +4,7 @@ import pickle
 import pandas as pd
 import scipy.sparse as sp
 
-from ultils import helper, product_analysis, process_cmt
+from ultils import content_process, helper, product_analysis
 
 st.set_page_config(page_title="Sentiment Analysis System", page_icon=":shopping_cart:", layout="wide")
 
@@ -472,7 +472,7 @@ elif page == "Sentiment Analysis":
     st.markdown(button_style, unsafe_allow_html=True)
     if st.button("Phân Tích"):
         if flag:
-            st.subheader("🧐 Processed Feedback")
+            # st.subheader("🧐 Processed Feedback")
 
             if len(lines) > 0:
                 # st.code(lines, language="plaintext")
@@ -483,10 +483,10 @@ elif page == "Sentiment Analysis":
                 df = pd.DataFrame(new_reviews, columns=['raw_content'])
 
                 # Call clean_comment function (replace with your actual function implementation)
-                df_new = process_cmt.clean_comment(df, 'raw_content', 'cleaned_content')
+                df_new = content_process.clean_comment(df, 'raw_content', 'cleaned_content')
                 
                 # Display cleaned content
-                st.write(df_new['cleaned_content'])
+                # st.write(df_new['cleaned_content'])
                 
                 # Transform data using the vectorizer
                 x_new = tfidf_vectorizer.transform(df_new['cleaned_content'])
