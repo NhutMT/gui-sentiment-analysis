@@ -469,8 +469,9 @@ elif page == "Sentiment Analysis":
     st.markdown(button_style, unsafe_allow_html=True)
     if st.button("Phân Tích"):
         if flag:
-            # st.subheader("🧐 Processed Feedback")
-
+            st.subheader("🧐 Processed Feedback")
+            # remove empty or blank lines
+            lines = [line for line in lines if line.strip() != ""]
             if len(lines) > 0:
                 # st.code(lines, language="plaintext")
 
