@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import scipy.sparse as sp
 
-from ultils import helper, product_analysis
+from ultils import helper, product_analysis, process_cmt
 
 st.set_page_config(page_title="Sentiment Analysis System", page_icon=":shopping_cart:", layout="wide")
 
@@ -397,12 +397,11 @@ if page == "Project Summary":
 #####################################
 
 elif page == "Sentiment Analysis":
-    # image = Image.open("src/images/process.png")
-    # st.image(image, caption="Hasaki.VN - Quality & Trust")
 
     pkl_filemodel = "src/models/logreg_model.pkl" 
     with open(pkl_filemodel, 'rb') as file:  
         lgr_model_sentiment = pickle.load(file)
+
     # doc model count len
     pkl_count = "src/models/tfidf_vectorizer.pkl"  
     with open(pkl_count, 'rb') as file:  
@@ -412,16 +411,12 @@ elif page == "Sentiment Analysis":
     with open(plk_scaler, 'rb') as file:
         scaler = pickle.load(file)
 
+    pkl_svm='src/models/svm_model.pkl'
+    with open(pkl_svm, 'rb') as file:  
+        svm_model_sentiment = pickle.load(file)
+
     # Header
     st.title("🌟 Phân Tích Phản Hồi 🌟")
-    # st.write("Is your product **glowing up** your customers or causing a **breakout**? Let's find out!")
-
-    # # Add Banner Image
-    # st.image(
-    #     "src/images/classify.png", 
-    #     caption="✨ **Discover customer insights for flawless skincare experiences**",
-    #     use_column_width=True
-    # )
 
     # Introductory Text
     st.markdown("""
@@ -437,7 +432,8 @@ elif page == "Sentiment Analysis":
     flag = False
     lines = None
     data_type = st.radio("Chọn hình thức gửi phản hồi", options=("📝 Nhập từ bàn phím", "📁 Tải 1 file phản hồi"))
-
+    
+    # data_type = "📝 Tải 1 file"
     if data_type == "📁 Tải 1 file phản hồi":
         # Upload file
         uploaded_file = st.file_uploader("Vui lòng chọn file tải lên (*.txt, *.csv):", type=['txt', 'csv'])
@@ -462,6 +458,7 @@ elif page == "Sentiment Analysis":
             except Exception as e:
                 st.error(f"🚨 Oops! Couldn’t read the file: {e}")
 
+    # data_type = "📝 Nhập từ bàn phím"
     if data_type == "📝 Nhập từ bàn phím":
         content = st.text_area(label="Nội dung phản hồi (có thể nhập nhiều phản hồi khi 'Enter' xuống dòng):", placeholder="e.g., Sản phẩm này rất tốt!")
         if content != "":
@@ -473,13 +470,22 @@ elif page == "Sentiment Analysis":
     if st.button("Phân Tích"):
         if flag:
             st.subheader("🧐 Processed Feedback")
+
             if len(lines) > 0:
                 st.code(lines, language="plaintext")
 
+                # Create a DataFrame with content as new reviews and column name as raw_content
                 new_reviews = [str(line) for line in lines]
+                df = pd.DataFrame(new_reviews, columns=['raw_content'])
+
+                # Call clean_comment function (replace with your actual function implementation)
+                df_new = process_cmt.clean_comment(df, 'raw_content', 'cleaned_content')
+                
+                # Display cleaned content
+                st.write(df_new['cleaned_content'])
                 
                 # Transform data using the vectorizer
-                x_new = tfidf_vectorizer.transform(new_reviews)
+                x_new = tfidf_vectorizer.transform(df_new['cleaned_content'])
 
                 # Create a DataFrame for the new reviews
                 df_new_review = pd.DataFrame(x_new.toarray(), columns=tfidf_vectorizer.get_feature_names_out())
@@ -491,9 +497,11 @@ elif page == "Sentiment Analysis":
                 # Combine features
                 new_reviews_combined = sp.hstack((x_new, df_new_review[['content_length_scaled']]))
 
-                # Predict sentiment
-                y_pred_new = lgr_model_sentiment.predict(new_reviews_combined)
-                
+                # Predict sentiment by Logistic 
+                # y_pred_new = lgr_model_sentiment.predict(new_reviews_combined)
+
+                # Predict sentiment by svm 
+                y_pred_new = svm_model_sentiment.predict(new_reviews_combined)
                 # Map predictions to sentiment labels
                 sentiment_labels = {0: "💔 Negative", 1: "💖 Positive"}
                 predictions = [sentiment_labels[pred] for pred in y_pred_new]
@@ -586,3 +594,7 @@ elif page == "Product Analysis":
             with col2:
                 st.write("\nTop 50 từ Negative về sản phẩm:")
                 product_analysis.wcloud_visualize(s_negative, 'Neg_words', 'Word Cloud - Negative')
+
+
+
+
