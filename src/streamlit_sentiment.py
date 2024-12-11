@@ -500,7 +500,7 @@ elif page == "Sentiment Analysis":
                 new_reviews_combined = sp.hstack((x_new, df_new_review[['content_length_scaled']]))
 
                 # Predict sentiment by Logistic 
-                # y_pred_new = lgr_model_sentiment.predict(new_reviews_combined)
+                y_pred_new = lgr_model_sentiment.predict(new_reviews_combined)
 
                 # Predict sentiment by svm 
                 # y_pred_new = svm_model_sentiment.predict(new_reviews_combined)
