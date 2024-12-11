@@ -475,9 +475,7 @@ elif page == "Sentiment Analysis":
             # st.subheader("🧐 Processed Feedback")
 
             if len(lines) > 0:
-                # st.code(lines, language="plaintext")
 
-                # Create a DataFrame with content as new reviews and column name as raw_content
                 # Create a DataFrame with content as new reviews and column name as raw_content
                 new_reviews = [str(line) for line in lines]
                 df = pd.DataFrame(new_reviews, columns=['raw_content'])
